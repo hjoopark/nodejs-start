@@ -10,8 +10,8 @@ const usersRouter = require('./routes/users');
 const app2 = express();     // express에서 app.js가 중앙 통제실
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');  // html을 대체하는 엔진 pug
+app2.set('views', path.join(__dirname, 'views'));
+app2.set('view engine', 'pug');  // html을 대체하는 엔진 pug
 
 app2.use(logger('dev'));
 app2.use(express.static(path.join(__dirname, 'public')));
@@ -43,7 +43,7 @@ app2.use((req, res, next) => {
 });
 
 app2.use('/', indexRouter);
-app2.use('/users', indexRouter);
+app2.use('/users', usersRouter);
 
 // 404 NOT FOUND     클라이언트에서 에러가 발생
 app2.use((req, res, next) => {
