@@ -13,15 +13,11 @@ module.exports = (passport) => {
     passport.deserializeUser((id, done) => {
         // id를 DB조회 후 req.user로
         // 1 -> { id:1, name: zero, age: 25 } -> req.user
-        if (user[id]) {
-            done(user[id]);
-        } else {
-            User.find({ where: { id } })
-                .then(user => done(null, user))
-                .catch(err => done(err));
-        }
+        User.find({ where: { id } })
+            .then(user => done(null, user))
+            .catch(err => done(err));
     });
 
     local(passport);
-    //kakao(passport);
+    kakao(passport);
 };
