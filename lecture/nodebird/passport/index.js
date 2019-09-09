@@ -13,7 +13,18 @@ module.exports = (passport) => {
     passport.deserializeUser((id, done) => {
         // id를 DB조회 후 req.user로
         // 1 -> { id:1, name: zero, age: 25 } -> req.user
-        User.find({ where: { id } })
+        User.find({ 
+            where: { id },
+            include: [{
+                model: User,
+                attributes: ['id', 'nick'],
+                as: 'Followers',
+            }, {
+                model: User,
+                attributes: ['id', 'nick'],
+                as: 'Followings',
+            }],
+        })
             .then(user => done(null, user))
             .catch(err => done(err));
     });

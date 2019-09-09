@@ -15,9 +15,11 @@ db.User = require('./user')(sequelize, Sequelize);
 db.Post = require('./post')(sequelize, Sequelize);
 db.Hashtag = require('./hashtag')(sequelize, Sequelize);
 
+// 사용자-게시글 관계
 db.User.hasMany(db.Post);
 db.Post.belongsTo(db.User);
 
+// 해쉬태그-게시글 관계
 db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });
 db.Hashtag.belongsToMany(db.Post, { through: 'PostHashtag' });
 
