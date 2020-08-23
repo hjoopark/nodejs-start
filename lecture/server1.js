@@ -19,7 +19,7 @@ const server = http.createServer((req, res) => {
         const { query } = url.parse(req.url);
         const { name } = qs.parse(query);
         const expires = new Date();
-        expires.setMinutes(expires.getMinutes() + 5);
+        expires.setMinutes(expires.getMinutes() + 5); //쿠키의 유효시간
         const randomInt = Date.now();
         session[randomInt] = {
           name,
