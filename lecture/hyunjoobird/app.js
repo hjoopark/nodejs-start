@@ -9,8 +9,10 @@ require('dotenv').config();     //process.env에서 찾아 올 수 있다.
 
 // 라우터들 연결
 const indexRouter = require('./routes/page');
+const { sequelize } = require('./models');
 
 const app = express();
+sequelize.sync();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
