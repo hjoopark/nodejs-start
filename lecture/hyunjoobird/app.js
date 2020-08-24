@@ -5,14 +5,17 @@ const morgan = require('morgan');
 const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
 require('dotenv').config();     //process.env에서 찾아 올 수 있다.
 
 // 라우터들 연결
 const indexRouter = require('./routes/page');
 const { sequelize } = require('./models');
+const passportConfig = require('./passport');
 
 const app = express();
 sequelize.sync();
+passportConfig(passport);   //passport 시작
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -26,13 +29,16 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
     resave: false,
     saveUninitialized: false,
-    secret: 'nodebirdsecret',
+    secret: process.env.COOKIE_SECRET,
     cookie: {
         httpOnly: true,
         secure: false,
     },
 }));        // 세션을 만들고
 app.use(flash());
+app.use(passport.initialize()); // passport를 초기화 해주는 미들웨어
+app.use(passport.session());    // passport가 세션을 사용
+
 app.use('/', indexRouter);
 
 // 404에러처리 미들웨어
