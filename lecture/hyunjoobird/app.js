@@ -10,6 +10,7 @@ require('dotenv').config();     //process.env에서 찾아 올 수 있다.
 
 // 라우터들 연결
 const indexRouter = require('./routes/page');
+const authRouter = require('./routes/auth');
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
 
@@ -40,6 +41,8 @@ app.use(passport.initialize()); // passport를 초기화 해주는 미들웨어
 app.use(passport.session());    // passport가 세션을 사용
 
 app.use('/', indexRouter);
+app.use('/auth', authRouter);
+
 
 // 404에러처리 미들웨어
 app.use((req, res, next) => {

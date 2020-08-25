@@ -13,7 +13,7 @@ const router = express.Router();
 router.post('/join', isNotLoggedIn, async (req, res, next) => {
     const { email, nick, password } = req.body;
     try {
-        const exUser = await User.find({ where: { email }});
+        const exUser = await User.findOne({ where: { email }});
         if (exUser) {       // 가입된 이메일이 있으면
             req.flash('joinError', '이미 가입된 이메일입니다.');
             return res.redirect('/join');
@@ -34,7 +34,7 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
 });
 
 // POST /auth/login
-router.post('/login',(req, res, next) => { // req.body.email, req.body.password
+router.post('/login', isNotLoggedIn, (req, res, next) => { // req.body.email, req.body.password
     // localStrategy.js의 done(에러, 성공, 실패)가 아래 (authError, user, info)로 전달 된다.
     passport.authenticate('local', (authError, user, info) => {
         if (authError) {        //에러일때
@@ -46,7 +46,7 @@ router.post('/login',(req, res, next) => { // req.body.email, req.body.password
             return res.redirect('/');
         }
         //로그인 성공일 때
-        // req.login = passport로 추가해줌
+        // req.login 시에 serializeUser 호출 -> 유저 정보 중 아이디만 세션에 저장
         return req.login(user, (loginError) => {    // req.user에서 사용자 정보를 찾을 수 있다.
             if (loginError) {   //혹시나 에러가 날 수도 있으니 loginError를 걸어준다.
                 console.error(loginError);
