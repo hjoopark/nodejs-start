@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => (
     sequelize.define('user', {
         email: {
             type: DataTypes.STRING(40),
-            allowNull: false,
+            allowNull: true,        //카카오 정책 변경으로 널 허용
             unique: true,
         },
         nick: {

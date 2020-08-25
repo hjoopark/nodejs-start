@@ -64,5 +64,17 @@ router.get('/logout', isLoggedIn, (req, res) => {
     res.redirect('/');
 });
 
+//(1)
+// GET /auth/kakao 이거면 kakaoStrategy로 연결되게 해야함
+router.get('/kakao', passport.authenticate('kakao'));
+// 이렇게 하면 kakaoStrategy가 실행이 된다.
+
+//(3)
+// GET /auth/kakao/callback
+router.get('/kakao/callback', passport.authenticate('kakao', {
+    failureRedirect: '/',   // 카카오로그인 실패했으면 메인라우터로 되돌아가게 함
+}), (req, res) => {
+    res.redirect('/');
+});
 
 module.exports = router;
