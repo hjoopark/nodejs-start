@@ -20,12 +20,24 @@ router.get('/profile', isLoggedIn, (req, res) => {
 
 // 메인페이지
 router.get('/',(req, res, next) => {
-  res.render('main', {
-    title: 'hyunjooBird',
-    twits: [],
-    user: req.user,
-    loginError: req.flash('loginError'),
-  });
+  Post.findAll({
+    include: {
+      model: User,
+      attributes: ['id', 'nick'],
+    },
+  })
+    .then((posts) => {
+      res.render('main', {
+        title: 'hyunjooBird',
+        twits: posts,
+        user: req.user,
+        loginError: req.flash('loginError'),
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      next(error);
+    });
 });
 
 module.exports = router;
